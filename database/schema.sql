@@ -5,7 +5,7 @@ USE Seminars;
 -- Event
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event (
-    idEvent INT,
+    idEvent INT NOT NULL,
     title VARCHAR(500),
     description TEXT,
     location VARCHAR(200),
@@ -20,7 +20,7 @@ CREATE TABLE Event (
 -- Location
 -- -----------------------------------------------------------------------------
 CREATE TABLE Location (
-    venueName VARCHAR(200),
+    venueName VARCHAR(200) NOT NULL,
     details VARCHAR(400),
     address VARCHAR(200),
     city VARCHAR(100),
@@ -33,17 +33,18 @@ CREATE TABLE Location (
 -- Rating
 -- -----------------------------------------------------------------------------
 CREATE TABLE Rating (
-    idRating INT,
-    idEvent INT,
-    stars ENUM('one', 'two', 'three', 'four', 'five'),
-    PRIMARY KEY (idRating)
+    idRating INT NOT NULL,
+    idEvent INT NOT NULL,
+    stars ENUM('one', 'two', 'three', 'four', 'five') NOT NULL,
+    PRIMARY KEY (idRating),
+    FOREIGN KEY (idEvent) REFERENCES Event(idEvent)
 );
 
 -- -----------------------------------------------------------------------------
 -- Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Speaker (
-    idSpeaker INT,
+    idSpeaker INT NOT NULL,
     firstName VARCHAR(100),
     lastName VARCHAR(100),
     credentials VARCHAR(200),
@@ -55,7 +56,9 @@ CREATE TABLE Speaker (
 -- Event_has_Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event_has_Speaker (
-    idEvent INT,
-    idSpeaker INT
+    idEvent INT NOT NULL,
+    idSpeaker INT NOT NULL,
+    FOREIGN KEY (idEvent) REFERENCES Event(idEvent),
+    FOREIGN KEY (idSpeaker) REFERENCES Speaker(idSpeaker)
 );
 
