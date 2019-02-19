@@ -1,22 +1,41 @@
-import mysql.connector
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-credentials = {
-    'user': 'app',
-    'password': 'app',
-    'host': 'db',
-    'database': 'app',
-    'raise_on_warnings': True
-}
+Base = declarative_base()
+
+
+class Product(Base):
+    __tablename__ = 'Product'
+
+    id = Column(Integer, primary_key=True)
+    title = Column('title', String(32))
+
+    def __init__(self, title):
+        self.title = title
+
+
+print('Here 1')
+engine = create_engine('mysql+mysqlconnector://app:app@db/app')
 
 # Continue attempting to connect until successful
 while True:
     try:
-        cnx = mysql.connector.connect(**credentials)
-        cursor = cnx.cursor()
-        cursor.execute("CREATE TABLE Person (name CHAR(100))")
-        cursor.close()
-        cnx.commit()
-        cnx.close()
+        engine.connect()
         break
-    except mysql.connector.Error as err:
+    except:
         pass
+
+Base.metadata.create_all(engine)
+connection = engine.connect()
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+p1 = Product('ketchup')
+session.add(p1)
+
+session.commit()
+session.close()
+
+print("Done.")
