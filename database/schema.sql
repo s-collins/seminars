@@ -13,20 +13,21 @@ CREATE TABLE Event (
     startTime TIME,
     endTime TIME,
     url TEXT,
-    PRIMARY KEY (idEvent)
+    PRIMARY KEY (idEvent),
+    FOREIGN KEY (location) REFERENCES Location(name)
 );
 
 -- -----------------------------------------------------------------------------
 -- Location
 -- -----------------------------------------------------------------------------
 CREATE TABLE Location (
-    venueName VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
     details VARCHAR(400),
     address VARCHAR(200),
     city VARCHAR(100),
     state VARCHAR(100),
     postcode VARCHAR(50),
-    PRIMARY KEY (venueName)
+    PRIMARY KEY (name)
 );
 
 -- -----------------------------------------------------------------------------
