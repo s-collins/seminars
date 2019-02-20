@@ -1,50 +1,35 @@
-import unittest
-import database as db
-from sqlalchemy.engine import reflection
-from sqlalchemy import types
+import database_settings as db_settings
+import sqlite3
 
+# Variables
+TEST_DB = 'test.db'
 
-class DatabaseTest(unittest.TestCase):
-    def setUp(self):
-        TEST_CONNECTION_STR = 'sqlite:///test.db'
-        db.config(TEST_CONNECTION_STR)
-        self.db = db.Database()
-        self.inspector = reflection.Inspector.from_engine(self.db.engine)
-
-
-class DatabaseHasCorrectTableNames(DatabaseTest):
-    def runTest(self):
-        TABLES = [
-            'Event',
-            'Location',
-            'Rating',
-            'Speaker',
-            'Event_has_Speaker'
-        ]
-        tables = self.inspector.get_table_names()
-        self.assertEqual(set(TABLES), set(tables))
-
-
-class CorrectEventTable(DatabaseTest):
-    def runTest(self):
-        columns = self.inspector.get_columns('Event')
-
-        # Verify 'id_event'
-        column = next((c for c in columns if c['name'] == 'id_event'))
-        self.assertEqual(type(column['type']), types.INTEGER)
-        self.assertEqual(column['primary_key'], True)
-        self.assertEqual(column['nullable'], False)
-        self.assertEqual(column['autoincrement'], 'auto')
-
-        # Verify 'title'
-        column = next((c for c in columns if c['name'] == 'title'))
-        self.assertEqual(type(column['type']), types.VARCHAR)
-        self.assertEqual(column['primary_key'], False)
-        self.assertEqual(column['nullable'], False)
-
-        # TODO: remove after finishing test implementation
-        self.assertTrue(False, "\n\n***TEST IS NOT FULLY IMPLEMENTED\n")
-
+def create_test_db():
+    query = open('../../database/schema.sql', 'r').read()
+    connection = sqlite3.connect(TEST_DB)
+    c = connection.cursor()
+    c.executescript(query)
+    connection.commit()
+    c.close()
+    connection.close()
+    
 
 if __name__ == '__main__':
-    unittest.main()
+    create_test_db()
+
+    # Configure the settings for the database module
+    db_settings.config('sqlite:///{0}'.format(TEST_DB))
+    from database import Database, Speaker
+
+    # Create the data access layer
+    db = Database()
+
+    s1 = Speaker('Sally', 'Smith', 'student', 'UA')
+    s2 = Speaker('Bob', 'Smith', 'student', 'UA')
+
+    db.session.add_all([s1, s2])
+    db.session.commit()
+
+    speakers = db.get_all_speakers()
+    print(speakers[0])
+    print(speakers[1])

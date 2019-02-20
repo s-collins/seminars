@@ -1,6 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS Seminars;
-USE Seminars;
-
 -- -----------------------------------------------------------------------------
 -- Event
 -- -----------------------------------------------------------------------------
@@ -13,7 +10,7 @@ CREATE TABLE Event (
     startTime TIME,
     endTime TIME,
     url TEXT,
-    PRIMARY KEY (idEvent),
+    PRIMARY KEY (id_event),
     FOREIGN KEY (location) REFERENCES Location(name)
 );
 
@@ -34,32 +31,33 @@ CREATE TABLE Location (
 -- Rating
 -- -----------------------------------------------------------------------------
 CREATE TABLE Rating (
-    idRating INT NOT NULL,
-    idEvent INT NOT NULL,
-    stars ENUM('one', 'two', 'three', 'four', 'five') NOT NULL,
-    PRIMARY KEY (idRating),
-    FOREIGN KEY (idEvent) REFERENCES Event(idEvent)
+    id_rating INT NOT NULL,
+    id_event INT NOT NULL,
+    stars INT,
+    PRIMARY KEY (id_rating),
+    FOREIGN KEY (id_event) REFERENCES Event(idEvent)
 );
 
 -- -----------------------------------------------------------------------------
 -- Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Speaker (
-    idSpeaker INT NOT NULL,
-    firstName VARCHAR(100),
-    lastName VARCHAR(100),
+    id_speaker INTEGER,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
     credentials VARCHAR(200),
     organization VARCHAR(200),
-    PRIMARY KEY (idSpeaker)
+    PRIMARY KEY (id_speaker)
 );
 
 -- -----------------------------------------------------------------------------
 -- Event_has_Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event_has_Speaker (
-    idEvent INT NOT NULL,
-    idSpeaker INT NOT NULL,
-    FOREIGN KEY (idEvent) REFERENCES Event(idEvent),
-    FOREIGN KEY (idSpeaker) REFERENCES Speaker(idSpeaker)
+    id_event INT NOT NULL,
+    id_speaker INT NOT NULL,
+    FOREIGN KEY (id_event) REFERENCES Event(id_event),
+    FOREIGN KEY (id_speaker) REFERENCES Speaker(id_speaker),
+    PRIMARY KEY (id_event, id_speaker)
 );
 
