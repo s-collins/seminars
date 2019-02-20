@@ -24,12 +24,3 @@ class Database:
         self.Session = sessionmaker(bind=self.engine)
         Base.metadata.create_all(self.engine)
 
-    def save(self, entity):
-        session = self.Session()
-        session.add(entity)
-        session.commit()
-        session.close()
-
-    def get_all_speakers(self):
-        session = self.Session()
-        return session.query(Speaker).all()

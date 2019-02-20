@@ -16,7 +16,7 @@ class Event(Base):
 
     # Relation attributes
     id_event = Column(Integer, primary_key=True)
-    title = Column(String)
+    title = Column(String, nullable=False)
     description = Column(String)
     location = Column(String)
     date = Column(Date)

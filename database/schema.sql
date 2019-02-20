@@ -5,8 +5,8 @@ USE Seminars;
 -- Event
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event (
-    idEvent INT NOT NULL,
-    title VARCHAR(500),
+    id_event INTEGER NOT NULL,
+    title VARCHAR(500) NOT NULL,
     description TEXT,
     location VARCHAR(200),
     date DATE,
