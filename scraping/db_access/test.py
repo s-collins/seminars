@@ -5,7 +5,7 @@ import sqlite3
 TEST_DB = 'test.db'
 
 def create_test_db():
-    query = open('../../database/schema.sql', 'r').read()
+    query = open('/resources/schema.sql', 'r').read()
     connection = sqlite3.connect(TEST_DB)
     c = connection.cursor()
     c.executescript(query)
