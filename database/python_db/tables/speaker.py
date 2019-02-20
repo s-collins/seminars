@@ -1,5 +1,5 @@
 from sqlalchemy import (Column, Integer, String)
-from base import Base
+from tables.base import Base
 
 
 class Speaker(Base):

@@ -1,5 +1,5 @@
 from sqlalchemy import (Column, Integer, Enum)
-from base import Base
+from tables.base import Base
 
 
 class Rating(Base):

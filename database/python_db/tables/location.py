@@ -1,5 +1,5 @@
 from sqlalchemy import (Column, String)
-from base import Base
+from tables.base import Base
 
 
 class Location(Base):

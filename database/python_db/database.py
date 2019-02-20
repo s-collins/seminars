@@ -1,13 +1,16 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from base import Base
+from tables.base import Base
 
 # Import all relations
-from event import Event
-from location import Location
-from rating import Rating
-from speaker import Speaker
+from tables.event import Event
+from tables.location import Location
+from tables.rating import Rating
+from tables.speaker import Speaker
 
+# TODO: Consider making the "conn_string" a global module variable.
+#       This would enable me to modify the variable, for instance,
+#       before I run test code.
 
 class Database:
 
