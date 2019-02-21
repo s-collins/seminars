@@ -40,6 +40,15 @@ class Location(Base):
     __tablename__ = 'Location'
     __table_args__ = {'autoload': True}
 
+    def __init__(self, name, details=None, address=None, city=None, state=None,
+                 postcode=None):
+        self.name = name
+        self.details = details
+        self.address = address
+        self.city = city
+        self.state = state
+        self.postcode = postcode
+
 
 class Rating(Base):
     __tablename__ = 'Rating'
@@ -60,17 +69,29 @@ class Database:
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
 
+    def save_location(self, l):
+        try:
+            self.session.add(l)
+            self.session.commit()
+        except:
+            self.session.rollback()
+            raise RuntimeError("Error saving location")
+
     def save_speaker(self, s):
         filter = {'first_name': s.first_name, 'last_name': s.last_name}
-        speakers = self.get_speaker(filter)
+        speakers = self.get_speakers(filter)
         for speaker in speakers:
             if s.duplicates(speaker):
                 raise RuntimeError("Duplicate speaker")
         self.session.add(s)
         self.session.commit()
 
-    def get_speaker(self, filter):
-        return self.session.query(Speaker).filter_by(**filter).all()
+    def get_locations(self, filter=None):
+        if filter is None:
+            return self.session.query(Location).all()
+        return self.session.query(Location).filter_by(**filter).all()
 
-    def get_all_speakers(self):
-        return self.session.query(Speaker).all()
+    def get_speakers(self, filter=None):
+        if filter is None:
+            return self.session.query(Speaker).all()
+        return self.session.query(Speaker).filter_by(**filter).all()

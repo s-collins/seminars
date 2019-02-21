@@ -43,8 +43,8 @@ CREATE TABLE Rating (
 -- -----------------------------------------------------------------------------
 CREATE TABLE Speaker (
     id_speaker INTEGER,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
     credentials VARCHAR(200),
     organization VARCHAR(200),
     PRIMARY KEY (id_speaker)
