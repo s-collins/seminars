@@ -6,7 +6,7 @@ import database_settings
 TEST_DATABASE = 'test_database.db'
 
 def setup_test_database():
-    # Create empty test database
+    # create empty test database
     file = open('/resources/schema.sql', 'r')
     data_definition = file.read()
     conn = sqlite3.connect(TEST_DATABASE)
