@@ -11,6 +11,16 @@ class Event(Base):
     __tablename__ = 'Event'
     __table_args__ = {'autoload': True}
 
+    def __init__(self, title, description, location, date, start_time, end_time, url):
+        self.id_event = None
+        self.title = title
+        self.description = description
+        self.location = location
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
+        self.url = url
+
 
 class Speaker(Base):
     __tablename__ = 'Speaker'
@@ -40,10 +50,8 @@ class Location(Base):
     __tablename__ = 'Location'
     __table_args__ = {'autoload': True}
 
-    def __init__(self, name, details=None, address=None, city=None, state=None,
-                 postcode=None):
+    def __init__(self, name, address=None, city=None, state=None, postcode=None):
         self.name = name
-        self.details = details
         self.address = address
         self.city = city
         self.state = state
@@ -68,6 +76,14 @@ class Database:
         self.metadata = Base.metadata
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
+
+    def save_event(self, e):
+        try:
+            self.session.add(e)
+            self.session.commit()
+        except:
+            self.session.rollback()
+            raise RuntimeError("Error saving event")
 
     def save_location(self, l):
         try:

@@ -7,8 +7,8 @@ CREATE TABLE Event (
     description TEXT,
     location VARCHAR(200),
     date DATE,
-    startTime TIME,
-    endTime TIME,
+    start_time TIME,
+    end_time TIME,
     url TEXT,
     PRIMARY KEY (id_event),
     FOREIGN KEY (location) REFERENCES Location(name)
@@ -19,7 +19,6 @@ CREATE TABLE Event (
 -- -----------------------------------------------------------------------------
 CREATE TABLE Location (
     name VARCHAR(200) NOT NULL,
-    details VARCHAR(400),
     address VARCHAR(200),
     city VARCHAR(100),
     state VARCHAR(100),
