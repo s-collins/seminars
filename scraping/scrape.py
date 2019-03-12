@@ -1,5 +1,5 @@
 import database_settings
-database_settings.config('sqlite:///test.sqlite3')
+database_settings.config('mysql+pymysql://root:root@localhost/test_database')
 import database
 
 import cleveland_museum_of_art
@@ -18,4 +18,5 @@ if __name__ == '__main__':
 			all_events.append(event)
 
 	for e in all_events:
+                # TODO: Save the location.........
 		db.save_event(e)
