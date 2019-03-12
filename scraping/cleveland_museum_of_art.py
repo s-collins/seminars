@@ -10,6 +10,13 @@ class Scraper(scraper_base.ScraperBase):
     """
 
     URL = 'https://www.clevelandart.org/events/lectures'
+    LOCATION = database.Location(
+        name='The Cleveland Museum of Art',
+        address='11150 East Boulevard',
+        city='Cleveland',
+        state='Ohio',
+        postcode='44106'
+    )
 
     def __init__(self):
         self.date_matcher = datetime_glob.Matcher(pattern='%Y-%m-%dT%H:%M:%S-*')
@@ -21,7 +28,6 @@ class Scraper(scraper_base.ScraperBase):
         soup = scraper_base.get_soup(self.URL)
         view_rows = soup.find_all('div', class_='views-row')
         events = []
-        location = "Cleveland Museum of Art"
         for row in view_rows:
             try:
                 title = self.__get_title(row)
@@ -30,7 +36,7 @@ class Scraper(scraper_base.ScraperBase):
                 event_url = self.__get_event_url(row)
             except:
                 continue
-            events.append(database.Event(title, description, location, date, start_time, end_time, event_url))
+            events.append(database.Event(title, description, LOCATION, date, start_time, end_time, event_url))
         return events
 
     def __get_title(self, view_row):
