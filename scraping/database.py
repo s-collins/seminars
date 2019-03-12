@@ -86,12 +86,13 @@ class Database:
             raise RuntimeError("Error saving event")
 
     def save_location(self, l):
-        try:
-            self.session.add(l)
-            self.session.commit()
-        except:
-            self.session.rollback()
-            raise RuntimeError("Error saving location")
+        filter = {'name': l.name}
+        locations = self.get_locations(filter)
+        for location in locations:
+            if location.name == l.name:
+                return
+        self.session.add(l)
+        self.session.commit()
 
     def save_speaker(self, s):
         filter = {'first_name': s.first_name, 'last_name': s.last_name}

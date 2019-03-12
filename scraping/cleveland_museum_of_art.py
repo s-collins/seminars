@@ -36,7 +36,8 @@ class Scraper(scraper_base.ScraperBase):
                 event_url = self.__get_event_url(row)
             except:
                 continue
-            events.append(database.Event(title, description, LOCATION, date, start_time, end_time, event_url))
+            event = database.Event(title, description, self.LOCATION.name, date, start_time, end_time, event_url)
+            events.append(event)
         return events
 
     def __get_title(self, view_row):

@@ -14,7 +14,7 @@ CREATE TABLE Location (
 -- Event
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event (
-    id_event INTEGER NOT NULL,
+    id_event INTEGER AUTO_INCREMENT,
     title VARCHAR(500) NOT NULL,
     description TEXT,
     location VARCHAR(100),

@@ -5,18 +5,14 @@ import database
 import cleveland_museum_of_art
 
 if __name__ == '__main__':
-	db = database.Database()
+    db = database.Database()
 
-	scrapers = [
-		cleveland_museum_of_art.Scraper()
-	]
+    scrapers = [
+        cleveland_museum_of_art.Scraper()
+    ]
 
-	all_events = []
-	for scraper in scrapers:
-		events = scraper.extract_events()
-		for event in events:
-			all_events.append(event)
-
-	for e in all_events:
-                # TODO: Save the location.........
-		db.save_event(e)
+    for scraper in scrapers:
+        events = scraper.extract_events()
+        for event in events:
+            db.save_location(scraper.LOCATION)
+            db.save_event(event)
