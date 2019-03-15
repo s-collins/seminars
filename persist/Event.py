@@ -10,7 +10,7 @@ class Event(Base.DeclarativeBase):
     event_id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
     title = Column(String(500))
     description = Column(String)
-    location = Column(String)
+    location = Column(String(100))
     date = Column(Date)
     start_time = Column(Time)
     end_time = Column(Time)
