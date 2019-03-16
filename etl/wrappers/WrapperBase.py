@@ -22,7 +22,7 @@ def get_soup(url):
 
 class WrapperBase(ABC):
 
-    def ping(self):
+    def ping(self, url):
         """
         Pings the scraper's URL in order to confirm that it is valid.
 
@@ -35,6 +35,17 @@ class WrapperBase(ABC):
             return False
         else:
             return True
+
+    def get_soup(self, url):
+        """
+        Sends a request to the given URL and creates BeautifulSoup tree from
+        response HTML.
+
+        Raises:
+            http.client.HTTPException
+        """
+        response = urllib.request.urlopen(url)
+        return BeautifulSoup(response.read(), 'html.parser')
 
     @abstractmethod
     def get_source_name(self):
