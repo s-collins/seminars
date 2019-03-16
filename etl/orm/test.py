@@ -1,6 +1,5 @@
 import unittest
 import Database
-from Location import Location
 import datetime
 
 # ------------------------------------------------------------------------------
