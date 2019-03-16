@@ -1,21 +1,24 @@
-import Base
-from sqlalchemy import Column, Integer, String, Date, Time
-from sqlalchemy import Sequence
+from Base import DeclarativeBase
+from sqlalchemy import Column, Integer, String, Date, Time, ForeignKey, Sequence
+from sqlalchemy.orm import relationship
 
 
-class Event(Base.DeclarativeBase):
+class Event(DeclarativeBase):
     __tablename__ = 'Event'
 
     # Define table details
     event_id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
     title = Column(String(500))
     description = Column(String)
-    location = Column(String(100))
+    location_name = Column(String(100), ForeignKey('Location.name'))
     date = Column(Date)
     start_time = Column(Time)
     end_time = Column(Time)
     event_url = Column(String)
     image_url = Column(String)
+
+    # Define relationships
+    location = relationship("Location", back_populates="events", lazy='joined')
 
     def __repr__(self):
         """
@@ -26,7 +29,7 @@ class Event(Base.DeclarativeBase):
             "\tevent_id='%s' \n"
             "\ttitle='%s' \n"
             "\tdescription='%s' \n"
-            "\tlocation='%s' \n"
+            "\tlocation_name='%s' \n"
             "\tdate='%s' \n"
             "\tstart_time='%s' \n"
             "\tend_time='%s' \n"
@@ -38,7 +41,7 @@ class Event(Base.DeclarativeBase):
             self.event_id,
             self.title,
             self.description,
-            self.location,
+            self.location_name,
             self.date,
             self.start_time,
             self.end_time,

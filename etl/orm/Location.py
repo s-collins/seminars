@@ -1,9 +1,9 @@
-import Base
-from sqlalchemy import Column, Integer, String, Date, Time
-from sqlalchemy import Sequence
+from Base import DeclarativeBase
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 
-class Location(Base.DeclarativeBase):
+class Location(DeclarativeBase):
     __tablename__ = 'Location'
 
     # Define table details
@@ -12,6 +12,9 @@ class Location(Base.DeclarativeBase):
     city = Column(String(100))
     state = Column(String(100))
     postcode = Column(String(50))
+
+    # Define relationships
+    events = relationship("Event", back_populates="location")
 
     def __repr__(self):
         """
@@ -33,3 +36,11 @@ class Location(Base.DeclarativeBase):
             self.state,
             self.postcode
         )
+
+    def __eq__(self, other):
+        return self.name == other.name and \
+               self.address == other.address and \
+               self.city == other.city and \
+               self.state == other.state and \
+               self.postcode == other.postcode
+
