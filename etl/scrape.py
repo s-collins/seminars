@@ -1,4 +1,5 @@
 from wrappers import ClevelandMuseumOfArt
+from wrappers import UADepartmentOfPolymerScience
 from orm import Database
 import logging
 
@@ -9,7 +10,8 @@ if __name__ == '__main__':
 
 	# List of wrapper objects for data sources
 	all_wrappers = [
-		ClevelandMuseumOfArt.Wrapper(database),
+		#ClevelandMuseumOfArt.Wrapper(database),
+		UADepartmentOfPolymerScience.Wrapper(database),
 	]
 
 	for wrapper in all_wrappers:
