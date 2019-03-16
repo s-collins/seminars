@@ -4,6 +4,11 @@ from sqlalchemy.orm import relationship
 
 
 class Location(DeclarativeBase):
+
+    # --------------------------------------------------------------------------
+    # Schema configuration
+    # --------------------------------------------------------------------------
+
     __tablename__ = 'Location'
 
     # Define table details
@@ -15,6 +20,10 @@ class Location(DeclarativeBase):
 
     # Define relationships
     events = relationship("Event", back_populates="location")
+
+    # --------------------------------------------------------------------------
+    # Methods
+    # -------------------------------------------------------------------------- 
 
     def __repr__(self):
         """

@@ -1,9 +1,15 @@
 from Base import DeclarativeBase
+from Event_has_Speaker import event_has_speaker
 from sqlalchemy import Column, Integer, String, Date, Time, ForeignKey, Sequence
 from sqlalchemy.orm import relationship
 
 
 class Event(DeclarativeBase):
+
+    # --------------------------------------------------------------------------
+    # Schema configuration
+    # --------------------------------------------------------------------------
+
     __tablename__ = 'Event'
 
     # Define table details
@@ -18,7 +24,26 @@ class Event(DeclarativeBase):
     image_url = Column(String)
 
     # Define relationships
-    location = relationship("Location", back_populates="events", lazy='joined')
+    location = relationship(
+        "Location",
+        back_populates="events",
+        lazy='joined'
+    )
+    speakers = relationship(
+        "Speaker",
+        secondary=event_has_speaker,
+        back_populates='events'
+    )
+
+    # --------------------------------------------------------------------------
+    # Methods
+    # --------------------------------------------------------------------------
+
+    def add_speaker(self, speaker):
+        self.speakers.append(speaker)
+
+    def set_location(self, location):
+        self.location = location
 
     def __repr__(self):
         """
@@ -48,3 +73,14 @@ class Event(DeclarativeBase):
             self.event_url,
             self.image_url
         )
+
+    def __eq__(self, other):
+        return self.title == other.title and \
+               self.description == other.description and \
+               self.location_name == other.location_name and \
+               self.date == other.date and \
+               self.start_time == other.start_time and \
+               self.end_time == other.end_time and \
+               self.event_url == other.event_url and \
+               self.image_url == other.image_url
+                   
