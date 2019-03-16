@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-from Base import DeclarativeBase
-from Event import Event
-from Location import Location
-from Speaker import Speaker
+from .Base import DeclarativeBase
+from .Event import Event
+from .Location import Location
+from .Speaker import Speaker
 
 
 def make_test_db():

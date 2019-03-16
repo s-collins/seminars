@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey, Table
-from Base import DeclarativeBase
+from .Base import DeclarativeBase
 
 
 # association table between Event and Speaker

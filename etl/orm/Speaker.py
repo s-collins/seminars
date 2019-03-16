@@ -1,7 +1,7 @@
-from Base import DeclarativeBase
-from Event_has_Speaker import event_has_speaker
 from sqlalchemy import Column, Integer, String, Date, Time, ForeignKey, Sequence
 from sqlalchemy.orm import relationship
+from .Base import DeclarativeBase
+from .Event_has_Speaker import event_has_speaker
 
 
 class Speaker(DeclarativeBase):

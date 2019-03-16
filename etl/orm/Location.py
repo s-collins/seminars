@@ -1,6 +1,6 @@
-from Base import DeclarativeBase
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from .Base import DeclarativeBase
 
 
 class Location(DeclarativeBase):

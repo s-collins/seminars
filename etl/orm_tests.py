@@ -1,6 +1,6 @@
 import unittest
-import Database
 import datetime
+from orm import Database
 
 # ------------------------------------------------------------------------------
 # Dictionaries for building test entities
@@ -165,6 +165,3 @@ class SpeakerTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
