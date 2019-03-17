@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 import socket
-import urllib
+import urllib.request
 
 
 # set timeout in seconds

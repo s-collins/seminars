@@ -50,18 +50,21 @@ class Wrapper(WrapperBase):
 
         return events
 
+    def clean_text(self, text):
+        return str(text.strip().encode('utf-8'))
+
     def __extract_event_from_tree(self, tree):
         fields = {}
 
         # get title
         title = next(iter(tree.select('div.views-field-title > a')), None)
         if title:
-            fields['title'] = title.text.strip()
+            fields['title'] = self.clean_text(title.text)
 
         # get description
         description = next(iter(tree.select('div.views-field-field_event_description')), None)
         if description:
-            fields['description'] = description.text.strip()
+            fields['description'] = self.clean_text(description.text)
 
         # get date
         date = next(iter(tree.select('span.date-display-start')), None)
@@ -93,3 +96,4 @@ class Wrapper(WrapperBase):
                     fields['image_url'] = image_url.strip()
 
         return self.db.create_event(**fields)
+

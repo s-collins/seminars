@@ -3,14 +3,17 @@ from wrappers import UADepartmentOfPolymerScience
 from orm import Database
 import logging
 
+
+# Configure logging format
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+
 
 if __name__ == '__main__':
 	database = Database.make_test_db()
 
 	# List of wrapper objects for data sources
 	all_wrappers = [
-		#ClevelandMuseumOfArt.Wrapper(database),
+		ClevelandMuseumOfArt.Wrapper(database),
 		UADepartmentOfPolymerScience.Wrapper(database),
 	]
 
@@ -30,6 +33,7 @@ if __name__ == '__main__':
 			# save events to database
 			for event in events:
 				database.save_event(event)
+				print(event)
 
 		else:
 			logging.info(source + ':Failed ping')
