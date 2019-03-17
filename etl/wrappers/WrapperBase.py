@@ -47,6 +47,9 @@ class WrapperBase(ABC):
         response = urllib.request.urlopen(url)
         return BeautifulSoup(response.read(), 'html.parser')
 
+    def clean_text(self, text):
+        return str(text.strip().encode('ascii', errors='ignore').decode('ascii'))
+        
     @abstractmethod
     def get_source_name(self):
         """

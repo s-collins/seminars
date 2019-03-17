@@ -34,15 +34,12 @@ class Wrapper(WrapperBase):
 	def get_url(self):
 		return self.BASE_URL + datetime.datetime.today().strftime('%Y%m%d')
 
-	def clean_text(self, text):
-		return str(text.strip().encode('utf-8'))
-
 	def extract_events(self):
 		events = []
 
 		# number of days forward (from today) to scrape
 		num_days = 90
-		
+
 		day = datetime.datetime.today()
 		for i in range(num_days):
 			# update day
@@ -107,8 +104,18 @@ class Wrapper(WrapperBase):
 		if image_url:
 			fields['image_url'] = image_url.get('src')
 
-		# get location!!!
+		event = self.db.create_event(**fields)
 
-		return self.db.create_event(**fields)
+		# get location
+		location = next(iter(tree.select('div.lw_events_location')), None)
+		if location:
+			location_fields = {
+				'name': self.clean_text(location.text)
+			}
+			location = self.db.create_location(**location_fields)
+			self.db.save_location(location)
+			event.set_location(location)
+
+		return event
 
 

@@ -50,9 +50,6 @@ class Wrapper(WrapperBase):
 
         return events
 
-    def clean_text(self, text):
-        return str(text.strip().encode('utf-8'))
-
     def __extract_event_from_tree(self, tree):
         fields = {}
 

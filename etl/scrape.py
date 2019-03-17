@@ -33,10 +33,9 @@ if __name__ == '__main__':
 			# save events to database
 			for event in events:
 				database.save_event(event)
-
-		events = database.load_all_events()
-		for event in events:
-			print(event)
-
 		else:
 			logging.info(source + ':Failed ping')
+
+	events = database.load_all_events()
+	for event in events:
+		print(event)
