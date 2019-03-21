@@ -1,10 +1,8 @@
-from selenium import webdriver
-from bs4 import BeautifulSoup
 import logging
-from time import sleep
 from dateutil.parser import parse
 import datetime
 from .WrapperBase import WrapperBase
+from .ScraperUtil import ScraperUtil
 
 class Wrapper(WrapperBase):
 	"""
@@ -17,16 +15,7 @@ class Wrapper(WrapperBase):
 
 	def __init__(self, db):
 		self.db = db
-
-		ops = webdriver.ChromeOptions()
-		ops.add_argument('--headless')
-		ops.add_argument('--no-sandbox')
-		ops.add_argument('--disable-dev-shm-usage')
-		self.driver = webdriver.Chrome(chrome_options=ops)
-		self.driver.implicitly_wait(20)
-
-	def __del__(self):
-		self.driver.quit()
+		self.helper = ScraperUtil()
 
 	def get_source_name(self):
 		return self.NAME
@@ -48,74 +37,78 @@ class Wrapper(WrapperBase):
 
 			# get HTML from URL
 			url = self.BASE_URL + day.strftime('%Y%m%d')
-			self.driver.get(url)
-			sleep(.5)
-			html = self.driver.execute_script('return document.body.innerHTML')
-			soup = BeautifulSoup(html, features='html.parser')		
 
-			# get events
-			event_list = next(iter(soup.select('div#lw_cal_day_rightcol > div.lw_cal_event_list')), None)
-			if event_list:
-				event_trees = event_list.find_all(
-					'div',
-					{'class': lambda x: x and 'lw_tag_guest_speaker' in x.split()}
-				)
-				for tree in event_trees:
-					event = self.__extract_event_from_tree(tree, day)
-					events.append(event)
-					logging.info(self.get_source_name() + ':Scraped event \"' + event.title + '\"')
+			# extract node containing list of events
+			html = self.helper.GetHTML(url)
+			selector = 'div#lw_cal_day_rightcol > div.lw_cal_event_list'
+			event_list = self.helper.CssSelectFirst(html, selector)
+
+			# skip this day if no event list was found
+			if event_list is None:
+				continue
+
+			# extract event nodes
+			tag = 'div'
+			css_class = 'lw_tag_guest_speaker'
+			event_trees = self.helper.SelectElementsMulticlass(event_list, tag, css_class)
+
+			# extract event from each node
+			for tree in event_trees:
+				event = self.__extract_event_from_tree(tree, day)
+				events.append(event)
+				logging.info('Scraped event \"' + event.title + '\"')
 
 		return events
 
 	def __extract_event_from_tree(self, tree, date):
+		h = self.helper
 		fields = {}
 
 		# get title
-		title = next(iter(tree.select('div.lw_events_title')), None)
+		title = h.CssSelectFirst(tree, 'div.lw_events_title')
 		if title:
-			fields['title'] = self.clean_text(title.text)
+			fields['title'] = h.GetText(title)
 
 		# get description
-		description = next(iter(tree.select('div.lw_events_summary')), None)
+		description = h.CssSelectFirst(tree, 'div.lw_events_summary')
 		if description:
-			fields['description'] = self.clean_text(description.text)
+			fields['description'] = h.GetText(description)
 
 		# get date
 		fields['date'] = date
 
 		# get start_time
-		start_time = next(iter(tree.select('span.lw_start_time')), None)
+		start_time = h.CssSelectFirst(tree, 'span.lw_start_time')
 		if start_time:
-			fields['start_time'] = parse(start_time.text.strip()).time()
+			start_time = h.GetText(start_time)
+			fields['start_time'] = parse(start_time).time()
 
 		# get end_time
-		end_time = next(iter(tree.select('span.lw_end_time')), None)
+		end_time = h.CssSelectFirst(tree, 'span.lw_end_time')
 		if end_time:
-			fields['end_time'] = parse(end_time.text.strip()).time()
+			end_time = h.GetText(end_time)
+			fields['end_time'] = parse(end_time).time()
 
 		# get event_url
-		event_url = next(iter(tree.select('div.lw_events_title > a')), None)
+		event_url = h.CssSelectFirst(tree, 'div.lw_events_title > a')
 		if event_url:
 			base_url = 'https://uakron.edu/cpspe/news-events/calendar'
-			fields['event_url'] = base_url + event_url.get('href')
+			fields['event_url'] = base_url + h.GetAttribute(event_url, 'a', 'href')
 
 		# get image_url
-		image_url = next(iter(tree.select('img.lw_image')), None)
+		image_url = h.CssSelectFirst(tree, 'img.lw_image')
 		if image_url:
-			fields['image_url'] = image_url.get('src')
+			fields['image_url'] = h.GetAttribute(image_url, 'img', 'src')
 
+		# save event
 		event = self.db.create_event(**fields)
 
 		# get location
-		location = next(iter(tree.select('div.lw_events_location')), None)
+		location = h.CssSelectFirst(tree, 'div.lw_events_location')
 		if location:
-			location_fields = {
-				'name': self.clean_text(location.text)
-			}
+			location_fields = {'name': h.GetText(location)} 
 			location = self.db.create_location(**location_fields)
 			self.db.save_location(location)
 			event.set_location(location)
 
 		return event
-
-

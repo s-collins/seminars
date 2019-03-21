@@ -8,18 +8,6 @@ import urllib.request
 socket.setdefaulttimeout(20)
 
 
-def get_soup(url):
-    """
-    Sends a request to the given URL and creates BeautifulSoup tree from
-    response HTML.
-
-    Raises:
-        http.client.HTTPException
-    """
-    response = urllib.request.urlopen(url)
-    return BeautifulSoup(response.read(), 'html.parser')
-
-
 class WrapperBase(ABC):
 
     def ping(self, url):
@@ -31,24 +19,9 @@ class WrapperBase(ABC):
         """
         try:
             urllib.request.urlopen(self.get_url())
+            return True
         except:
             return False
-        else:
-            return True
-
-    def get_soup(self, url):
-        """
-        Sends a request to the given URL and creates BeautifulSoup tree from
-        response HTML.
-
-        Raises:
-            http.client.HTTPException
-        """
-        response = urllib.request.urlopen(url)
-        return BeautifulSoup(response.read(), 'html.parser')
-
-    def clean_text(self, text):
-        return str(text.strip().encode('ascii', errors='ignore').decode('ascii'))
         
     @abstractmethod
     def get_source_name(self):

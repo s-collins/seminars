@@ -5,7 +5,7 @@ import logging
 
 
 # Configure logging format
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 if __name__ == '__main__':
@@ -17,25 +17,26 @@ if __name__ == '__main__':
 		UADepartmentOfPolymerScience.Wrapper(database),
 	]
 
+	# Extract events from each data source
 	for wrapper in all_wrappers:
-		# get name of data source
-		source = wrapper.get_source_name()
 
-		if wrapper.ping(wrapper.get_url()):
+		name = wrapper.get_source_name()
+		url = wrapper.get_url()
 
-			# report successful connection
-			logging.info(source + ':Successful ping')
+		logging.info('-' * 80)
+		logging.info(name)
+		logging.info(url)
+		logging.info('-' * 80)
 
-			# extract events
+		if wrapper.ping(url):
+			logging.info('Successful ping')
 			events = wrapper.extract_events()
-			logging.info(source + ':Scraped ' + str(len(events)) + ' events')
-
-			# save events to database
+			logging.info('Scraped ' + str(len(events)) + ' events')
 			for event in events:
 				database.save_event(event)
 		else:
-			logging.info(source + ':Failed ping')
+			logging.info('Connection Failure')
 
-	events = database.load_all_events()
-	for event in events:
-		print(event)
+	#events = database.load_all_events()
+	#for event in events:
+		#print(event)
