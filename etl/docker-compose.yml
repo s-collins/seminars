@@ -1,0 +1,7 @@
+version: '3'
+services:
+  etl_test:
+    build: .
+    volumes:
+     - .:/etl
+    command: python3 scrape.py

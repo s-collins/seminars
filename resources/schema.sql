@@ -14,15 +14,16 @@ CREATE TABLE Location (
 -- Event
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event (
-    id_event INTEGER AUTO_INCREMENT,
+    event_id INTEGER AUTO_INCREMENT,
     title VARCHAR(500) NOT NULL,
     description TEXT,
     location VARCHAR(100),
     date DATE,
     start_time TIME,
     end_time TIME,
-    url TEXT,
-    PRIMARY KEY (id_event),
+    event_url TEXT,
+    image_url TEXT,
+    PRIMARY KEY (event_id),
     FOREIGN KEY (location) REFERENCES Location(name)
 );
 
@@ -30,33 +31,33 @@ CREATE TABLE Event (
 -- Rating
 -- -----------------------------------------------------------------------------
 CREATE TABLE Rating (
-    id_rating INT NOT NULL,
-    id_event INT NOT NULL,
+    rating_id INT NOT NULL,
+    event_id INT NOT NULL,
     stars INT,
-    PRIMARY KEY (id_rating),
-    FOREIGN KEY (id_event) REFERENCES Event(id_event)
+    PRIMARY KEY (rating_id),
+    FOREIGN KEY (event_id) REFERENCES Event(id_event)
 );
 
 -- -----------------------------------------------------------------------------
 -- Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Speaker (
-    id_speaker INTEGER,
+    speaker_id INTEGER,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     credentials VARCHAR(200),
     organization VARCHAR(200),
-    PRIMARY KEY (id_speaker)
+    PRIMARY KEY (speaker_id)
 );
 
 -- -----------------------------------------------------------------------------
 -- Event_has_Speaker
 -- -----------------------------------------------------------------------------
 CREATE TABLE Event_has_Speaker (
-    id_event INT NOT NULL,
-    id_speaker INT NOT NULL,
-    FOREIGN KEY (id_event) REFERENCES Event(id_event),
-    FOREIGN KEY (id_speaker) REFERENCES Speaker(id_speaker),
-    PRIMARY KEY (id_event, id_speaker)
+    event_id INT NOT NULL,
+    speaker_id INT NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES Event(event_id),
+    FOREIGN KEY (speaker_id) REFERENCES Speaker(speaker_id),
+    PRIMARY KEY (event_id, speaker_id)
 );
 
