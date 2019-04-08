@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from .Base import DeclarativeBase
@@ -17,6 +18,9 @@ class Database():
         self.engine = create_engine(cnx_str)
         self.Session = sessionmaker(bind=self.engine)
         self.sess = self.Session()
+
+        if not database_exists(self.engine.url):
+            create_database(self.engine.url)
 
         # Create schema if it does not already exist
         DeclarativeBase.metadata.create_all(self.engine)

@@ -8,7 +8,9 @@ RUN pip3 install bs4
 RUN pip3 install selenium
 RUN pip3 install datetime_glob
 RUN pip3 install sqlalchemy
+RUN pip3 install sqlalchemy-utils
 RUN pip3 install python-dateutil
+RUN pip3 install PyMySQL
 
 RUN apt-get install wget -y
 

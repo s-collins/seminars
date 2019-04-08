@@ -75,7 +75,7 @@ class Wrapper(WrapperBase):
 			fields['description'] = h.GetText(description)
 
 		# get date
-		fields['date'] = date
+		fields['date'] = date.strftime('%Y-%m-%d')
 
 		# get start_time
 		start_time = h.CssSelectFirst(tree, 'span.lw_start_time')

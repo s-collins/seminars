@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 if __name__ == '__main__':
-	database = Database.make_test_db()
+	database = Database.Database('mysql+pymysql://root:root@db:3306/events')
 
 	# List of wrapper objects for data sources
 	all_wrappers = [
@@ -37,6 +37,3 @@ if __name__ == '__main__':
 		else:
 			logging.info('Connection Failure')
 
-	#events = database.load_all_events()
-	#for event in events:
-		#print(event)
