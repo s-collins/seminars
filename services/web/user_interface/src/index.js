@@ -137,10 +137,25 @@ class NavBar extends React.Component {
 	}
 }
 
+class PageContainer extends React.Component {
+	render () {
+		return (
+			<div
+				className="w3-container w3-content"
+				style={{
+					"max-width": "1400px",
+					"margin-top": "80px"
+			}}>
+				<Feed />
+			</div>
+		);
+	}
+}
+
 ReactDOM.render(
 	<div>
 		<NavBar />
-		<Feed />
+		<PageContainer />
 	</div>,
 	document.getElementById('root')
 )
