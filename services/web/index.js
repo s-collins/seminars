@@ -42,37 +42,11 @@ db.connect(err => {
 //------------------------------------------------------------------------------
 
 app.get('/events', (request, response) => {
-	db.query('SELECT * FROM Event', (err, results) => {
+	const SELECT_EVENTS = 'SELECT * FROM Event ORDER BY date, start_time'
+	db.query(SELECT_EVENTS, (err, results) => {
 		if (err) {
 			return response.send(err);
 		}
 		return response.json({ data: results });
 	});
 });
-
-/*
-app.get('/events', (request, response) => {
-	return response.json({
-		"events": [
-			{
-				"title": "Event From Server",
-				"image_url": "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-				"location": "Fake Location",
-				"date": "Fake Date",
-				"start_time": "Fake Start Time",
-				"end_time": "Fake End Time"
-			},
-			{
-				"title": "Event From Server",
-				"image_url": "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-				"location": "Fake Location",
-				"date": "Fake Date",
-				"start_time": "Fake Start Time",
-				"end_time": "Fake End Time"
-			}
-		]
-	})
-});
-*/
