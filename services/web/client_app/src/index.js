@@ -118,18 +118,19 @@ class Feed extends React.Component {
 		}
 
 		// create the events
-		const events = this.state.data.events
+		const events = this.state.data.data
 		var event_displays = []
 		for (var i = 0; i < events.length; i++) {
+			const event = events[i];
 			event_displays.push(
 				<Event
-					title={events[i].title}
-					image_url={events[i].image_url}
-					description={events[i].description}
-					location={events[i].location}
-					date={events[i].date}
-					start_time={events[i].start_time}
-					end_time={events[i].end_time}				
+					title={event.title}
+					image_url={event.image_url}
+					description={event.description}
+					location={event.location_name}
+					date={event.date}
+					start_time={event.start_time}
+					end_time={event.end_time}				
 				/>
 			)
 		}

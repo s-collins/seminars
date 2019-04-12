@@ -21,3 +21,14 @@ services:
     volumes:
       - ./services/etl:/etl
     command: python3 scrape.py
+
+  web:
+    build: ./services/web
+    volumes:
+      - ./services/web:/web
+    command: >
+      bash -c "cd /web/client_app && npm run build && cd .. && node . "
+    ports:
+      - '4000:4000'
+    expose:
+      - '4000'

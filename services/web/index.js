@@ -14,9 +14,9 @@ app.listen(4000, () => {
 });
 
 // Get the production react app
-app.use(express.static(path.join(__dirname, '../user_interface/build')));
+app.use(express.static(path.join(__dirname, 'client_app/build')));
 app.get('/', (request, response) => {
-	response.sendFile(path.join(__dirname, '../user_interface/build/index.html'));
+	response.sendFile(path.join(__dirname, 'client_app/build/index.html'));
 });
 
 //------------------------------------------------------------------------------
@@ -24,9 +24,10 @@ app.get('/', (request, response) => {
 //------------------------------------------------------------------------------
 
 const db = mysql.createConnection({
-	host: 'localhost',
+	host: 'db',
+	port: '3306',
 	user: 'root',
-	password: '#hiveMind747',
+	password: 'root',
 	database: 'events'
 });
 
@@ -40,7 +41,6 @@ db.connect(err => {
 // API
 //------------------------------------------------------------------------------
 
-/*
 app.get('/events', (request, response) => {
 	db.query('SELECT * FROM Event', (err, results) => {
 		if (err) {
@@ -49,8 +49,8 @@ app.get('/events', (request, response) => {
 		return response.json({ data: results });
 	});
 });
-*/
 
+/*
 app.get('/events', (request, response) => {
 	return response.json({
 		"events": [
@@ -75,3 +75,4 @@ app.get('/events', (request, response) => {
 		]
 	})
 });
+*/
