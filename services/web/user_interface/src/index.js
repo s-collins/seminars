@@ -26,7 +26,7 @@ class Event extends React.Component {
 					style={{width: "60px"}}
 				/>
 				<h4>{this.props.title}</h4>
-				<hr class="w3-clear" />
+				<hr className="w3-clear" />
 			</div>
 		);
 	}
@@ -98,27 +98,49 @@ class Event extends React.Component {
 }
 
 class Feed extends React.Component {
+	constructor (props) {
+		super(props);
+		this.state = {
+			data: null,
+		}
+	}
+
+	componentDidMount () {
+		fetch('http://localhost:4000/events')
+			.then(response => response.json())
+			.then(data => this.setState({data}));
+	}
+
+	createEventDisplays () {
+		// return early if data has not been loaded
+		if (this.state.data == null) {
+			return;
+		}
+
+		// create the events
+		const events = this.state.data.events
+		var event_displays = []
+		for (var i = 0; i < events.length; i++) {
+			event_displays.push(
+				<Event
+					title={events[i].title}
+					image_url={events[i].image_url}
+					description={events[i].description}
+					location={events[i].location}
+					date={events[i].date}
+					start_time={events[i].start_time}
+					end_time={events[i].end_time}				
+				/>
+			)
+		}
+		return event_displays
+	}
+
 	render () {
 		return (
 			<div>
-				{this.renderEvent()}
-				{this.renderEvent()}
-				{this.renderEvent()}
+				{this.createEventDisplays()}
 			</div>
-		);
-	}
-
-	renderEvent () {
-		return (
-			<Event
-				title="Sean's Test Event"
-				image_url="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-				description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-				location="Sean's Location"
-				date="10 April 2019"
-				start_time="04:00pm"
-				end_time="05:00pm"
-			/>
 		);
 	}
 }
@@ -143,8 +165,8 @@ class PageContainer extends React.Component {
 			<div
 				className="w3-container w3-content"
 				style={{
-					"max-width": "1400px",
-					"margin-top": "80px"
+					"maxWidth": "1400px",
+					"marginTop": "80px"
 			}}>
 				<Feed />
 			</div>
