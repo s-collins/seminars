@@ -25,7 +25,9 @@ class Event extends React.Component {
 					className="w3-left w3-circle w3-margin-right"
 					style={{width: "60px"}}
 				/>
-				<h4>{this.props.title}</h4>
+				<a href={this.props.event_url}>
+					<h4>{this.props.title}</h4>
+				</a>
 				<hr className="w3-clear" />
 			</div>
 		);
@@ -125,6 +127,7 @@ class Feed extends React.Component {
 			event_displays.push(
 				<Event
 					title={event.title}
+					event_url={event.event_url}
 					image_url={event.image_url}
 					description={event.description}
 					location={event.location_name}
@@ -166,7 +169,7 @@ class PageContainer extends React.Component {
 			<div
 				className="w3-container w3-content"
 				style={{
-					"maxWidth": "1400px",
+					"maxWidth": "800px",
 					"marginTop": "80px"
 			}}>
 				<Feed />
