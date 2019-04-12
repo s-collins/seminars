@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
 import './w3-theme-blue-grey.css';
 import './css-stars.css';
 import './w3.css';
@@ -163,6 +165,49 @@ class NavBar extends React.Component {
 	}
 }
 
+class Controls extends React.Component {
+	constructor (props) {
+		super(props);
+		this.state = {
+			data: null
+		};
+	}
+
+	componentDidMount () {
+		fetch('http://localhost:4000/locations')
+			.then(response => response.json())
+			.then(data => this.setState({data}));
+	}
+
+	createLocationFilter () {
+		if (this.state.data == null) {
+			return;
+		}
+
+		var options = []
+		const locations = this.state.data.data
+		for (var i = 0; i < locations.length; i++) {
+			options.push(locations[i].name);
+		}
+
+		return (
+			<Dropdown
+				options={options}
+				placeholder="Filter events by location..."
+				onChange={this.props.loc_filter_callback}
+			/>
+		);
+	}
+
+	render () {
+		return (
+			<div>
+				{this.createLocationFilter()}
+			</div>
+		);
+	}
+}
+
 class PageContainer extends React.Component {
 	render () {
 		return (
@@ -172,6 +217,7 @@ class PageContainer extends React.Component {
 					"maxWidth": "800px",
 					"marginTop": "80px"
 			}}>
+				<Controls />
 				<Feed />
 			</div>
 		);

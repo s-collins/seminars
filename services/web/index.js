@@ -50,3 +50,13 @@ app.get('/events', (request, response) => {
 		return response.json({ data: results });
 	});
 });
+
+app.get('/locations', (request, response) => {
+	const SELECT_LOCATIONS = 'SELECT * FROM Location';
+	db.query(SELECT_LOCATIONS, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+		return response.json({ data: results });
+	});
+});
