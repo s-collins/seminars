@@ -10,8 +10,8 @@ class Feed extends React.Component {
 		}
 
 		// create the events
-		const events = this.props.events.data
-		var event_displays = []
+		const events = this.props.events.data;
+		var event_displays = [];
 		for (var i = 0; i < events.length; i++) {
 			const event = events[i];
 			event_displays.push(
@@ -25,9 +25,9 @@ class Feed extends React.Component {
 					start_time={event.start_time}
 					end_time={event.end_time}				
 				/>
-			)
+			);
 		}
-		return event_displays
+		return event_displays;
 	}
 
 	render () {

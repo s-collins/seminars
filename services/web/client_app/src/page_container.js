@@ -1,6 +1,7 @@
 import Controls from './controls.js';
 import Feed from './feed.js';
 import React from 'react';
+import YourEvents from './your_events.js'
 
 export default
 class PageContainer extends React.Component {
@@ -37,16 +38,23 @@ class PageContainer extends React.Component {
 			<div
 				className="w3-container w3-content"
 				style={{
-					"maxWidth": "1000px",
-					"marginTop": "80px"
+					"maxWidth": "1200px",
+					"marginTop": "60px"
 			}}>
-				<Controls
-					locations={this.state.locations}
-					filter_events_by_location={this.filterEventsByLocation}
-				/>
-				<Feed
-					events={this.state.events}
-				/>
+				<div className="w3-col" style={{"width": "70%"}}>
+					<Controls
+						locations={this.state.locations}
+						filter_events_by_location={this.filterEventsByLocation}
+					/>
+					<Feed
+						events={this.state.events}
+					/>
+				</div>
+				<div className="w3-col" style={{"width": "30%"}}>
+					<YourEvents
+						events = {this.state.events}
+					/>
+				</div>
 			</div>
 		);
 	}
