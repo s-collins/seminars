@@ -51,6 +51,20 @@ app.get('/events', (request, response) => {
 	});
 });
 
+app.get('/events/by_location', (request, response) => {
+	const { location_name } = request.query;
+	const SELECT_EVENTS_BY_LOCATION = 
+		'SELECT * FROM Event WHERE location_name= \"' +
+		location_name +
+		'\" ORDER BY date, start_time'
+	db.query(SELECT_EVENTS_BY_LOCATION, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+		return response.json({ data: results });
+	});
+});
+
 app.get('/locations', (request, response) => {
 	const SELECT_LOCATIONS = 'SELECT * FROM Location';
 	db.query(SELECT_LOCATIONS, (err, results) => {
