@@ -6,6 +6,7 @@ from .Base import DeclarativeBase
 from .Event import Event
 from .Location import Location
 from .Speaker import Speaker
+from .User import User
 
 
 def make_test_db():
