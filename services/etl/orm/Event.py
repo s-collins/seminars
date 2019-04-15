@@ -15,7 +15,7 @@ class Event(DeclarativeBase):
     # Define table details
     event_id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
     title = Column(String(500))
-    description = Column(String(1000))
+    description = Column(String(3000))
     location_name = Column(String(100), ForeignKey('Location.name'))
     date = Column(Date)
     start_time = Column(Time)

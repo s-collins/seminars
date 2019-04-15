@@ -71,7 +71,7 @@ class ScraperUtil:
 		Returns text contained in given html tag.
 		Removes leading and trailing whitespace.
 		"""
-		soup = BeautifulSoup(html, features='html.parser')
+		soup = BeautifulSoup(str(html), features='html.parser')
 		text = soup.text.strip().encode('ascii', errors='ignore')
 		return str(text.decode('ascii'))
 
@@ -79,6 +79,6 @@ class ScraperUtil:
 		"""
 		Returns text value of a tag's particular attribute
 		"""
-		soup = BeautifulSoup(html, features='html.parser')
+		soup = BeautifulSoup(str(html), features='html.parser')
 		attribute = soup.find(tag).get(attribute)
-		return attribute
+		return str(attribute)

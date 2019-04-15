@@ -1,5 +1,6 @@
 from wrappers import ClevelandMuseumOfArt
 from wrappers import UADepartmentOfPolymerScience
+from wrappers import SiegalLifelongLearning
 from orm import Database
 import logging
 
@@ -10,9 +11,11 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 if __name__ == '__main__':
 	database = Database.Database('mysql+pymysql://root:root@db:3306/events')
+	#database = Database.make_test_db()
 
 	# List of wrapper objects for data sources
 	all_wrappers = [
+		SiegalLifelongLearning.Wrapper(database),
 		ClevelandMuseumOfArt.Wrapper(database),
 		UADepartmentOfPolymerScience.Wrapper(database),
 	]
