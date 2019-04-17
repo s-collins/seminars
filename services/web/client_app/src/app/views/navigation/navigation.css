@@ -1,0 +1,74 @@
+.NavigationBar {
+	/* font */
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-align: left;
+
+	/* position */
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+
+	/* colors */
+	background-color: #4d636f;
+	color: #fff;
+}
+
+.NavigationButton {
+	/* cursor */
+	cursor: pointer;
+
+	/* font */
+	overflow: hidden;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+
+	/* position */
+	display: inline-block;
+	float: right;
+
+	/* framing */
+	border: none;
+	margin: 0;
+	padding: 12px 24px;
+}
+
+.NavigationButton:hover {
+	/* colors */
+	background-color: #fff;
+	color: #000;
+}
+
+.NavigationTitle {
+	/* colors */
+	background-color: #3a4b53;
+
+	/* cursor */
+	cursor: pointer;
+
+	/* font */
+	overflow: hidden;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+
+	/* position */
+	display: inline-block;
+	float: left;
+
+	/* framing */
+	border: none;
+	outline-width: 0;
+	padding: 12px 24px;
+}
+
+.NavigationTitle:hover {
+	/* colors */
+	background-color: #ccc;
+	color: #000;
+}
+

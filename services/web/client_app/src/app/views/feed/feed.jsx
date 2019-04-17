@@ -1,5 +1,6 @@
-import Event from './event.js'
 import React from 'react';
+import Event from './event.jsx';
+
 
 export default
 class Feed extends React.Component {
@@ -16,6 +17,7 @@ class Feed extends React.Component {
 			const event = events[i];
 			event_displays.push(
 				<Event
+					event_id={event.event_id}
 					title={event.title}
 					event_url={event.event_url}
 					image_url={event.image_url}
@@ -23,7 +25,8 @@ class Feed extends React.Component {
 					location={event.location_name}
 					date={event.date}
 					start_time={event.start_time}
-					end_time={event.end_time}				
+					end_time={event.end_time}
+					refresh={this.props.refresh}
 				/>
 			);
 		}

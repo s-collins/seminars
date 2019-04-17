@@ -1,0 +1,40 @@
+.form_outer {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	background-color: #303e45
+}
+
+.form_middle {
+	position: absolute;
+	left: 25%;
+	right: 25%;
+	top: 25%;
+	bottom: 25%;
+	margin: auto;
+	background: #f5f7f8;	
+	border-radius: 25px;
+}
+
+.form_inner {
+	width: 80%;
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+label {
+	display: block;
+}
+
+input {
+	display: block;
+	width: 100%;
+}
