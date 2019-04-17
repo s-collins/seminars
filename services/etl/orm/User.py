@@ -13,7 +13,7 @@ class User(DeclarativeBase):
     __tablename__ = 'User'
 
     # define table details
-    email = Column(String(200), primary_key=True)
+    username = Column(String(200), primary_key=True)
     password = Column(String(100))
 
     # define relationships

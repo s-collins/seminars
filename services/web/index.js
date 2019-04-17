@@ -41,6 +41,61 @@ db.connect(err => {
 // API
 //------------------------------------------------------------------------------
 
+app.get('/register', (request, response) => {
+	const { username, password } = request.query;
+
+	SELECT_USERS_BY_USERNAME = 'SELECT * FROM User WHERE username= \"' + username + '\"';
+	db.query(SELECT_USERS_BY_USERNAME, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+
+		if (results.length != 0) {
+			return response.json({
+				username_is_taken: true,
+				invalid_password: false,
+				success: false
+			});
+		}
+
+		if (!password.length) {
+			return response.json({
+				username_is_taken: false,
+				invalid_password: true,
+				success: false
+			});
+		}
+
+		// insert the user
+		INSERT_NEW_USER = 'INSERT INTO User VALUES (\"' + username + '\", \"' + password + '\")';
+		db.query(INSERT_NEW_USER, (err, results) => {
+			if (err) {
+				return response.send(err);
+			}
+			return response.json({
+				username_is_taken: false,
+				invalid_password: false,
+				success: true
+			});		
+		});
+	});
+});
+
+app.get('/login', (request, response) => {
+	const { username } = request.query;
+
+	SELECT_USERS_BY_USERNAME = 'SELECT * FROM User WHERE username= \"' + username + '\"';
+	db.query(SELECT_USERS_BY_USERNAME, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+		if (results.length == 1) {
+			return response.json({success: true, password: results[0].password});
+		}
+		return response.json({success: false});
+	});
+});
+
 app.get('/events', (request, response) => {
 	const SELECT_EVENTS = 'SELECT * FROM Event ORDER BY date, start_time'
 	db.query(SELECT_EVENTS, (err, results) => {
@@ -65,6 +120,23 @@ app.get('/events/by_location', (request, response) => {
 	});
 });
 
+app.get('/events/by_user', (request, response) => {
+	const { username } = request.query;
+	const SELECT_EVENTS_BY_USER = `
+		SELECT *
+		FROM Event, User_has_Event
+		WHERE
+			User_has_Event.username = ${username}
+		AND
+			Event.event_id = User_has_Event.event_id`;
+	db.query(SELECT_EVENTS_BY_USER, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+		return response.json({ data: results })
+	});
+});
+
 app.get('/locations', (request, response) => {
 	const SELECT_LOCATIONS = 'SELECT * FROM Location';
 	db.query(SELECT_LOCATIONS, (err, results) => {
@@ -73,4 +145,16 @@ app.get('/locations', (request, response) => {
 		}
 		return response.json({ data: results });
 	});
+});
+
+app.get('/save_event', (request, response) => {
+	const { username, event_id } = request.query;
+	const INSERT_SAVED_EVENT = `
+		INSERT INTO User_has_Event(username, event_id) VALUES ('${username}', ${event_id})
+	`;
+	db.query(INSERT_SAVED_EVENT, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+	})
 });

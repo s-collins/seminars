@@ -6,6 +6,6 @@ from .Base import DeclarativeBase
 user_has_event = Table(
 	'User_has_Event',
 	DeclarativeBase.metadata,
-	Column('user_email', String(200), ForeignKey('User.email')),
+	Column('username', String(200), ForeignKey('User.username')),
 	Column('event_id', Integer, ForeignKey('Event.event_id'))
 )
