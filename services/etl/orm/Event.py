@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date, Time, ForeignKey, Sequence
 from sqlalchemy.orm import relationship
 from .Base import DeclarativeBase
 from .Event_has_Speaker import event_has_speaker
+from .Event_has_Tag import event_has_tag
 
 
 class Event(DeclarativeBase):
@@ -33,6 +34,10 @@ class Event(DeclarativeBase):
         "Speaker",
         secondary=event_has_speaker,
         back_populates='events'
+    )
+    tags = relationship(
+        "Tag",
+        secondary=event_has_tag
     )
 
     # --------------------------------------------------------------------------

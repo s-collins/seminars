@@ -4,6 +4,15 @@ import Event from './event.jsx';
 
 export default
 class Feed extends React.Component {
+
+	render () {
+		return (
+			<div>
+				{this.createEventDisplays()}
+			</div>
+		);
+	}
+
 	createEventDisplays () {
 		// return early if data has not been loaded
 		if (this.props.events == null) {
@@ -31,13 +40,5 @@ class Feed extends React.Component {
 			);
 		}
 		return event_displays;
-	}
-
-	render () {
-		return (
-			<div>
-				{this.createEventDisplays()}
-			</div>
-		);
 	}
 }

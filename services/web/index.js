@@ -158,3 +158,32 @@ app.get('/save_event', (request, response) => {
 		}
 	})
 });
+
+app.get('/save_tag', (request, response) => {
+	const { event_id, tag_text } = request.query;
+	const INSERT_TAG = `
+		INSERT INTO Tag(tag_text)
+		VALUES ('${tag_text}')
+	`;
+	const INSERT_EVENT_HAS_TAG = `
+		INSERT INTO Event_has_Tag(event_id, tag_text)
+		VALUES (${event_id}, '${tag_text}')
+	`;
+	db.query(INSERT_TAG, (err, results) => {});
+	db.query(INSERT_EVENT_HAS_TAG, (err, results) => {});
+});
+
+app.get('/load_tags', (request, response) => {
+	const { event_id } = request.query;
+	const SELECT_TAGS_BY_EVENT_ID = `
+		SELECT *
+		FROM Event_has_Tag
+		WHERE Event_has_Tag.event_id = ${event_id}
+	`;
+	db.query(SELECT_TAGS_BY_EVENT_ID, (err, results) => {
+		if (err) {
+			return response.send(err);
+		}
+		return response.json({ data: results })
+	});
+})
